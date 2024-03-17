@@ -1,5 +1,5 @@
 import './styles.css';
-import { getWeatherForecast } from './api-calls.js';
+import { getWeatherForecast } from './weather-api.js';
 
 (async () => {
   const response = await getWeatherForecast('london');
@@ -13,6 +13,8 @@ Form design:
 Input location at top. apply a "change" or "input" event listener GETLOCATIONOPTIONS
 Ideally use the auto complete functionality that they have on the API.
 Enter or button to [GET_THE_WEATHER_FORECAST]
+Add a C/F switch to update display
+Possibly add a miles and inch  / metric ?
 Main content below, limit to today, and next 3 days (free API limit)
   - Location information at top
   - Today box on left below location
@@ -34,6 +36,14 @@ GET_THE_WEATHER_FORECAST:
     - location
     - today
     - forecast
+
+TOGGLE_C_F:
+  - ensure all structured so can only update numbers and units, not entire DOM
+
+TOGGLE_olde_metric:
+  - as above
+
+
 
 Data:
   - date, local time in location
