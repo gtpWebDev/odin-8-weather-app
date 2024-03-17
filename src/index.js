@@ -1,24 +1,51 @@
 import './styles.css';
-import DownCaret from './menu-down.svg';
+import { getWeatherForecast } from './api-calls.js';
 
-console.log('TEST');
+(async () => {
+  const response = await getWeatherForecast('london');
+  console.log(response);
+})();
 
-const element = document.createElement('div');
-const img = document.createElement('img');
+/*
 
-img.setAttribute('src', DownCaret);
+Form design:
 
-const testText = document.createElement('p');
-testText.textContent = 'Testing';
-testText.setAttribute('id', 'fontCheck');
+Input location at top. apply a "change" or "input" event listener GETLOCATIONOPTIONS
+Ideally use the auto complete functionality that they have on the API.
+Enter or button to [GET_THE_WEATHER_FORECAST]
+Main content below, limit to today, and next 3 days (free API limit)
+  - Location information at top
+  - Today box on left below location
+  - Three boxes to right of today, side by side for forecast
 
-element.appendChild(testText);
-element.appendChild(img);
-document.body.appendChild(element);
+GETLOCATIONOPTIONS:
+  - collect array of possible locations
+  - refine down to required location array
+  - use autocomplete functionality - check w3
+  
 
-const arrowFunction = (input) => {
-  return ++input;
-};
+GET_THE_WEATHER_FORECAST:
+  - get required data, should be possible with one "forecast" endpoint request
+  - refine the weather data to what I need
+    - create location object
+    - create today weather data
+    - create forecast weather data array
+  - construct the DOM
+    - location
+    - today
+    - forecast
 
-const result = arrowFunction(3);
-console.log(result);
+Data:
+  - date, local time in location
+  - condition text and icon
+  - temperature in c and f
+  - rain in mm
+  - wind speed mph, wind direction (compass, degree?)
+  - location, region, country
+
+
+
+
+
+
+*/
