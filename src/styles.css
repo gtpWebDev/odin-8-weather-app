@@ -1,0 +1,21 @@
+@font-face {
+  font-family: 'Dancing';
+  src: url('./dancing.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+#fontCheck {
+  color: black;
+  font-size: 24px;
+  font-family: 'Dancing';
+}
+
+p,
+img {
+  line-height: var(
+    --actual-font-size
+  ); /* important to control overall height of text*/
+  margin: 0;
+  padding: 0;
+}
