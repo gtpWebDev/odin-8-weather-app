@@ -1,21 +1,109 @@
-@font-face {
-  font-family: 'Dancing';
-  src: url('./dancing.ttf');
-  font-weight: 600;
-  font-style: normal;
+:root {
+  --font-hierarchy: Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+
+  --backGroundColour: #74c3d1;
+  --borderColour: #000000;
+  --lightTextColour: #f8f1e4;
+
+  --lightestColour: rgb(240, 240, 255);
+  --incompleteTask: rgb(210, 182, 214);
+  --completeTask: rgb(233, 220, 235);
+  --midDarkColour: rgb(90, 197, 160);
+  --darkestColour: #003049;
+
+  --lowPrio: rgb(17, 227, 17);
+  --midPrio: rgb(236, 192, 15);
+  --highPrio: rgb(219, 14, 14);
+
+  /* Main container width max of 80% vw and fixed width, centred */
+  --minContentWidth: 1200px;
+  --bodyWidth: min(var(--minContentWidth), 90vw);
+  --bodyWidthMargin: max(calc(0.5 * (100vw - var(--minContentWidth))), 5vw);
+
+  /* Main container height of 90% vh, centred */
+  --bodyHeight: 90vh;
+  --bodyHeightMargin: calc(0.5 * (100vh - var(--bodyHeight)));
+
+  --weatherDaySquareBoxWidth: 120px;
+
+  --header-scaler: 4rem;
 }
 
-#fontCheck {
-  color: black;
-  font-size: 24px;
-  font-family: 'Dancing';
+html {
+  /* set the rem */
+  font-size: 62.5%;
 }
 
-p,
-img {
-  line-height: var(
-    --actual-font-size
-  ); /* important to control overall height of text*/
+body {
+  background-color: var(--backGroundColour);
+  font-family: var(--font-hierarchy);
+  font-size: 2rem;
+}
+
+p {
   margin: 0;
-  padding: 0;
+}
+
+#main-container {
+  background-color: var(--lightestColour);
+  width: var(--bodyWidth);
+  height: var(--bodyHeight);
+  margin: var(--bodyHeightMargin) var(--bodyWidthMargin);
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  column-gap: 20px;
+}
+
+#sidebar-container {
+  padding: 40px 15px;
+  background-color: var(--midDarkColour);
+  box-shadow: 0px 6px 20px var(--midDarkColour);
+  display: grid;
+  align-content: start;
+  row-gap: 20px;
+}
+
+#page-title-container {
+  font-size: 3rem;
+}
+
+#display-container {
+  padding: 50px 30px;
+  display: grid;
+  justify-content: center;
+  align-content: start;
+  grid-template-rows: repeat (2, auto);
+  row-gap: 80px;
+}
+
+#location-display {
+  display: grid;
+  place-items: center;
+}
+
+#daily-weather-display {
+  padding: 30px;
+  display: grid;
+  justify-content: stretch;
+  grid-template-rows: repeat(2, auto);
+  border: 2px solid black;
+}
+
+#today-weather-display {
+  padding: 20px;
+  grid-row: 1;
+  grid-column: 1 / 4;
+  border: 2px solid green;
+  display: grid;
+  place-items: center;
+}
+
+.forecast-day-display {
+  grid-row: 2;
+  width: var(--weatherDaySquareBoxWidth);
+  height: var(--weatherDaySquareBoxWidth);
+  border: 2px solid green;
+  display: grid;
+  place-items: center;
 }

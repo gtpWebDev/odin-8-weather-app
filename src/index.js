@@ -1,10 +1,19 @@
 import './styles.css';
 import { getWeatherForecast } from './weather-api.js';
 
-(async () => {
-  const response = await getWeatherForecast('london');
-  console.log(response);
-})();
+// set up event listeners for API fetches
+
+// amend to value of input field after auto-complete
+// const getWeatherButton = document.querySelector('#get-weather-button');
+// getWeatherButton.addEventListener('click', async () => {
+//   const response = await getWeatherForecast('london', 3);
+//   console.log(response);
+// });
+
+// (async () => {
+//   const response = await getWeatherForecast('burnley', 3);
+//   console.log(response);
+// })();
 
 /*
 

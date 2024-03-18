@@ -42,7 +42,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Page Title',
+      title: 'Odin Weather App',
       template: './src/template.html',
     }),
   ],

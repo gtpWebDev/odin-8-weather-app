@@ -8,7 +8,6 @@ async function getWeatherForecast(location, numDays) {
 
   const locationData = createLocationData(weatherData.location);
   const todayWeatherData = createWeatherData(weatherData.current);
-
   const forecastWeatherData = createForecastWeatherArray(
     weatherData.forecast.forecastday
   );
