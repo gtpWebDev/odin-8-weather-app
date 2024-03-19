@@ -1,27 +1,25 @@
 // would normally be protected, free API so okay for now
 const weatherApiKey = '523c922a8fd8443586f100911241603';
 
-// Generates autocomplete options for a given text input
-async function getLocations(textInput) {
-  const url = `http://api.weatherapi.com/v1/search.json?key=${weatherApiKey}&q=${textInput}`;
-  const response = await fetch(url, { mode: 'cors' });
-  const locationOptionsArray = await response.json();
+// variables private to the module
+let locationData = {};
+let todayWeatherData = {};
+let forecastWeatherData = [];
 
-  return locationOptionsArray;
-}
+const getLocationData = () => locationData;
+const getTodayWeatherData = () => todayWeatherData;
+const getWeatherForecastData = () => forecastWeatherData;
 
-async function getWeatherForecast(location, numDays) {
+async function generateWeatherForecast(location, numDays) {
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${location}&days=${numDays}`;
   const response = await fetch(url, { mode: 'cors' });
   const weatherData = await response.json();
 
-  const locationData = createLocationData(weatherData.location);
-  const todayWeatherData = createWeatherData(weatherData.current);
-  const forecastWeatherData = createForecastWeatherArray(
+  locationData = createLocationData(weatherData.location);
+  todayWeatherData = createWeatherData(weatherData.current);
+  forecastWeatherData = createForecastWeatherArray(
     weatherData.forecast.forecastday
   );
-
-  return { locationData, todayWeatherData, forecastWeatherData };
 }
 
 const createWeatherData = (currData) => {
@@ -41,8 +39,10 @@ const createWeatherData = (currData) => {
 const createLocationData = (locData) => {
   return {
     name: locData.name,
+    region: locData.region,
     country: locData.country,
     localtime_unix: locData.localtime_epoch,
+    localtime_friendly: locData.localtime,
     // poss add date_fns here for a friendly localtime
   };
 };
@@ -65,6 +65,13 @@ const createForecastWeatherArray = (forecastArray) => {
     });
   });
   return simpleArray;
+};
+
+export {
+  generateWeatherForecast,
+  getLocationData,
+  getTodayWeatherData,
+  getWeatherForecastData,
 };
 
 //_________MAY USE THE BELOW
@@ -95,5 +102,3 @@ const createForecastWeatherArray = (forecastArray) => {
 //   const response = await safeFunction(url);
 //   console.log(response);
 // })();
-
-export { getLocations, getWeatherForecast };

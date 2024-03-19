@@ -1,14 +1,27 @@
 import './styles.css';
-import { getLocations, getWeatherForecast } from './weather-api.js';
+
+import {
+  generateLocationOptions,
+  locationOptions,
+} from './weather-locations.js';
+import {
+  generateWeatherForecast,
+  getLocationData,
+  getTodayWeatherData,
+  getWeatherForecastData,
+} from './weather-forecast.js';
+
 import sunIcon from './weather-sunny.svg';
 import cloudSearchIcon from './cloud-search.svg';
+
+const degreeSymbol = '\u00B0';
 
 /*
 
 To do list:
 - Changing text size in location input box widens grid, not sure why as yet.
 - Organise data - separate out DOM work, possible separate out location and weather elements of weatherapi
-
+- Add error handling for API requests
 */
 
 // import images for recognition by webpack
@@ -17,7 +30,7 @@ titleIcon.setAttribute('src', sunIcon);
 const locationSearchIcon = document.querySelector('#location-input-icon');
 locationSearchIcon.setAttribute('src', cloudSearchIcon);
 
-// Add event listeners for location input and location autocomplete selection
+// Event listeners
 
 const locationInput = document.querySelector('#location-input-text');
 const locAutocomplete = document.querySelector('#location-autocomplete');
@@ -25,12 +38,10 @@ const locAutocomplete = document.querySelector('#location-autocomplete');
 // Collect possible locations and display them
 locationInput.addEventListener('input', async (event) => {
   const currentInput = event.target.value;
-  let locationOptionArray = [];
   if (currentInput.length >= 3) {
-    locationOptionArray = await getLocations(currentInput);
-    console.log('array', locationOptionArray);
+    generateLocationOptions(currentInput);
   }
-  refreshAutocomplete(locationOptionArray);
+  refreshAutocomplete(locationOptions());
 });
 
 function refreshAutocomplete(optionArray) {
@@ -51,8 +62,65 @@ function refreshAutocomplete(optionArray) {
 
 // Get and display the weather
 locAutocomplete.addEventListener('click', async (event) => {
-  const response = await getWeatherForecast(event.target.value, 3);
-  console.log(response);
+  const response = await generateWeatherForecast(event.target.value, 3);
+
+  // Location basics
+  const locationData = getLocationData();
+
+  const locationName = document.querySelector('#location-name');
+  locationName.textContent = locationData.name + ', ' + locationData.region;
+  const locationRegion = document.querySelector('#location-region');
+  locationRegion.textContent = locationData.country;
+  const locationTimestamp = document.querySelector('#location-localtime');
+  locationTimestamp.textContent =
+    'Local time: ' + locationData.localtime_friendly;
+
+  // Today's Weather basics
+
+  const example = {
+    description: 'Light rain',
+    imageLoc: '//cdn.weatherapi.com/weather/64x64/day/296.png',
+    rain_inches: 0,
+    rain_mm: 0.04,
+    temp_cent: 12,
+    temp_fahr: 53.6,
+    windDirection: 220,
+    windSpeed_kph: 16.9,
+    windSpeed_mph: 10.5,
+  };
+
+  const todayWeatherData = getTodayWeatherData();
+  console.log('todayWeatherData', todayWeatherData);
+
+  const todayWeather = document.querySelector('#today-weather-display');
+  todayWeather.textContent = todayWeatherData.temp_cent + degreeSymbol + 'C';
+
+  // Forecast weather basics
+
+  const forecastExample = {
+    avgTemp_c: -10.9,
+    avgTemp_f: 12.4,
+    description: 'Partly Cloudy ',
+    forecastDate_unix: 1710892800,
+    forecastDayIndex: 1,
+    imageLoc: '//cdn.weatherapi.com/weather/64x64/day/116.png',
+    maxTemp_c: -1.7,
+    maxTemp_f: 29,
+    minTemp_c: -19.3,
+    minTemp_f: -2.8,
+  };
+
+  const forecastWeatherData = getWeatherForecastData();
+  console.log('forecastWeatherData', forecastWeatherData);
+
+  // check length of array is 3??
+  forecastWeatherData.forEach((element, index) => {
+    const a = document.querySelector(`[data-day-id='${index}']`);
+    a.textContent = element.avgTemp_c;
+  });
+
+  // const forecastWeather = document.querySelector('#today-weather-display');
+  // forecastWeather.textContent = forecastWeatherData.temp_cent + degreeSymbol + 'C';
 });
 
 /*
