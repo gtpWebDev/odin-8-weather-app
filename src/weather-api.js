@@ -1,6 +1,15 @@
 // would normally be protected, free API so okay for now
 const weatherApiKey = '523c922a8fd8443586f100911241603';
 
+// Generates autocomplete options for a given text input
+async function getLocations(textInput) {
+  const url = `http://api.weatherapi.com/v1/search.json?key=${weatherApiKey}&q=${textInput}`;
+  const response = await fetch(url, { mode: 'cors' });
+  const locationOptionsArray = await response.json();
+
+  return locationOptionsArray;
+}
+
 async function getWeatherForecast(location, numDays) {
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${location}&days=${numDays}`;
   const response = await fetch(url, { mode: 'cors' });
@@ -87,4 +96,4 @@ const createForecastWeatherArray = (forecastArray) => {
 //   console.log(response);
 // })();
 
-export { getWeatherForecast };
+export { getLocations, getWeatherForecast };

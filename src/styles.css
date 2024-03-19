@@ -51,21 +51,79 @@ p {
   height: var(--bodyHeight);
   margin: var(--bodyHeightMargin) var(--bodyWidthMargin);
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 350px 1fr;
   column-gap: 20px;
 }
 
 #sidebar-container {
-  padding: 40px 15px;
+  padding: 40px 25px;
   background-color: var(--midDarkColour);
   box-shadow: 0px 6px 20px var(--midDarkColour);
   display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: repeat(2, auto);
   align-content: start;
-  row-gap: 20px;
+  row-gap: 80px;
 }
 
 #page-title-container {
-  font-size: 3rem;
+  display: grid;
+  column-gap: 20px;
+  align-items: center;
+  grid-template-columns: auto 1fr;
+}
+
+#page-title-icon {
+  width: 40px;
+}
+
+#page-title-text {
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
+/* used to avoid input styling adjusting when autocomplete list is visible */
+#location-top-container {
+  position: relative; /* autocomplete list relative to this */
+}
+
+#location-input-container {
+  background-color: var(--lightestColour);
+  border: 2px solid black;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 20px;
+  align-items: center;
+  font-size: 2rem;
+}
+
+#location-input-text {
+  background-color: var(--lightestColour);
+  border: none;
+  padding: 0 10px;
+  /* font-size: 20px; */
+}
+
+input:focus {
+  outline: none;
+}
+
+#location-input-icon {
+  background-color: var(--lightestColour);
+  width: 40px;
+}
+
+#location-autocomplete {
+}
+
+.autocomplete-invis {
+  visibility: hidden;
+}
+
+.autocomplete-vis {
+  position: absolute;
+  top: 50px;
+  visibility: visible;
 }
 
 #display-container {
@@ -80,6 +138,7 @@ p {
 #location-display {
   display: grid;
   place-items: center;
+  font-size: 3rem;
 }
 
 #daily-weather-display {

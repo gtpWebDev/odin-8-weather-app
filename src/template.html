@@ -9,12 +9,22 @@
     <div id="main-container">
       <div id="sidebar-container">
         <div id="page-title-container">
+          <img id="page-title-icon" />
           <p id="page-title-text">Odin Weather App</p>
-          <img id="page-title-icon" src="" />
         </div>
-        <div id="location-input-container">
-          <input type="text" id="location-input-field" />
-          <p id="autocomplete">autocomplete list</p>
+        <div id="location-top-container">
+          <div id="location-input-container">
+            <input
+              type="text"
+              id="location-input-text"
+              placeholder="Enter a location, minimum 3 letters"
+            />
+            <img id="location-input-icon" />
+          </div>
+          <select id="location-autocomplete" class="autocomplete-invis">
+            <!-- will be visible / invisible based on script -->
+            <!-- Test -->
+          </select>
         </div>
       </div>
 
