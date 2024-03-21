@@ -6,7 +6,7 @@ let locationArray = [];
 const locationOptions = () => locationArray;
 
 async function generateLocationOptions(textInput) {
-  const url = `http://api.weatherapi.com/v1/search.json?key=${weatherApiKey}&q=${textInput}`;
+  const url = `https://api.weatherapi.com/v1/search.json?key=${weatherApiKey}&q=${textInput}`;
   const response = await fetch(url, { mode: 'cors' });
   locationArray = await response.json();
 }
