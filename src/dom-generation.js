@@ -1,14 +1,12 @@
 import './styles.css';
 
-import {
-  generateLocationOptions,
-  locationOptions,
-} from './weather-locations.js';
+import { generateLocationOptions } from './weather-locations.js';
 import {
   generateWeatherForecast,
   getLocationData,
   getTodayWeatherData,
   getWeatherForecastData,
+  getFailureMessage,
 } from './weather-forecast.js';
 
 import sunIcon from './weather-sunny.svg';
@@ -30,10 +28,11 @@ const locationInput = document.querySelector('#location-input-text');
 function addLocInputListener() {
   locationInput.addEventListener('input', async (event) => {
     const currentInput = event.target.value;
+    let locationOptions = [];
     if (currentInput.length >= 3) {
-      await generateLocationOptions(currentInput);
+      locationOptions = await generateLocationOptions(currentInput);
     }
-    refreshLocationList(locationOptions());
+    refreshLocationList(locationOptions);
   });
 }
 
@@ -62,11 +61,16 @@ function refreshLocationList(optionArray) {
         const additionalDataDelayInMs = 500;
         fadeVisibility(false, transitionTimeInMs);
         setTimeout(async () => {
-          await generateWeatherForecast(preciseLocation, 3);
-          drawLocationArea(getLocationData());
-          drawTodayWeatherArea(getTodayWeatherData());
-          drawForecastWeatherArea(getWeatherForecastData());
-          fadeVisibility(true, 2 * transitionTimeInMs);
+          const requestSuccessful = await generateWeatherForecast(
+            preciseLocation,
+            3
+          );
+          if (requestSuccessful) {
+            drawLocationArea(getLocationData());
+            drawTodayWeatherArea(getTodayWeatherData());
+            drawForecastWeatherArea(getWeatherForecastData());
+            fadeVisibility(true, 2 * transitionTimeInMs);
+          }
         }, transitionTimeInMs + additionalDataDelayInMs);
       });
       locDropdown.appendChild(option);
@@ -76,9 +80,10 @@ function refreshLocationList(optionArray) {
 }
 
 // fade main info container in and out
+const infoContainer = document.querySelector('#info-container');
 function fadeVisibility(visState, transitionTimeInMs) {
   const transitionTimeInSecs = (transitionTimeInMs / 1000).toFixed(3);
-  const infoContainer = document.querySelector('#info-container');
+
   infoContainer.setAttribute(
     'style',
     `transition-duration: ${transitionTimeInSecs}s`

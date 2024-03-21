@@ -157,6 +157,7 @@ input:focus {
 
 #info-container {
   box-shadow: 0px 0px 30px var(--midDarkColour);
+  text-align: center;
 }
 
 .vis-true {

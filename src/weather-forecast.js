@@ -7,21 +7,29 @@ const weatherApiKey = '523c922a8fd8443586f100911241603';
 let locationData = {};
 let todayWeatherData = {};
 let forecastWeatherData = [];
+let failureMessage = {};
 
 const getLocationData = () => locationData;
 const getTodayWeatherData = () => todayWeatherData;
 const getWeatherForecastData = () => forecastWeatherData;
+const getFailureMessage = () => failureMessage;
 
-async function generateWeatherForecast(location, numDays) {
+async function unsafeGenerateWeatherForecast(location, numDays) {
   const url = `https://api.weatherapi.com/v1/forecast.json?key=${weatherApiKey}&q=${location}&days=${numDays}`;
   const response = await fetch(url, { mode: 'cors' });
-  const weatherData = await response.json();
-
-  locationData = createLocationData(weatherData.location);
-  todayWeatherData = createWeatherData(weatherData.current);
-  forecastWeatherData = createForecastWeatherArray(
-    weatherData.forecast.forecastday
-  );
+  if (response.ok) {
+    const weatherData = await response.json();
+    locationData = createLocationData(weatherData.location);
+    todayWeatherData = createWeatherData(weatherData.current);
+    forecastWeatherData = createForecastWeatherArray(
+      weatherData.forecast.forecastday
+    );
+    return true;
+  } else {
+    const errorDetails = await response.json();
+    failureMessage = `Weather API error code ${errorDetails.error.code}: ${errorDetails.error.message}`;
+    return false;
+  }
 }
 
 const createWeatherData = (currData) => {
@@ -79,28 +87,18 @@ const createForecastWeatherArray = (forecastArray) => {
   return simpleArray;
 };
 
-export {
-  generateWeatherForecast,
-  getLocationData,
-  getTodayWeatherData,
-  getWeatherForecastData,
-};
-
-//_________MAY USE THE BELOW
-
-// nice handle error approach that I may use
-
 // Generic higher level error handler, replaces a function that does not deal with the errors
-// with a function that does, so you don't have to do it every time
+// with a function that does.
 
-// function handleError(fn) {
-//   return function (...params) {
-//     return fn(...params).catch(function (err) {
-//       //error handling
-//       console.error("Oops", err);
-//     });
-//   };
-// }
+function handleError(fn) {
+  return function (...params) {
+    return fn(...params).catch(function (err) {
+      console.error('Error fetching weather information from weather API', err);
+    });
+  };
+}
+
+const generateWeatherForecast = handleError(unsafeGenerateWeatherForecast);
 
 // ES6 equivalent
 // const handleError =
@@ -108,9 +106,10 @@ export {
 //   (...params) =>
 //     fn(...params).catch(console.error);
 
-// const safeFunction = handleError(unsafeAsyncFunction);
-
-// (async () => {
-//   const response = await safeFunction(url);
-//   console.log(response);
-// })();
+export {
+  generateWeatherForecast,
+  getLocationData,
+  getTodayWeatherData,
+  getWeatherForecastData,
+  getFailureMessage,
+};

@@ -4,14 +4,13 @@ import { attachImages, addLocInputListener } from './dom-generation.js';
 
 /*
 To do list:
+
+- improve API error handling to give UI information, and revisit generally when have better experience
 - Changing text size in location input box widens grid, not sure why as yet.
-- clear location text after drop down selected
-- Add error handling for API requests
-- Add a C/F switch to update display
-- Possibly add a miles and inch  / metric ?
+- Add Cent/Fahrenheit switch functionality
 - tidy up current weather temperature and wind
-- overall page structure improvement to deal with thin window
-- also possibly move location input 
+- overall page structure improvement to deal with changing window sizes
+
 */
 
 attachImages();
