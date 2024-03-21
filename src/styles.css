@@ -7,6 +7,7 @@
   --lightTextColour: #f8f1e4;
 
   --lightestColour: rgb(240, 240, 255);
+  --lighterColour: rgb(219, 219, 248);
   --incompleteTask: rgb(210, 182, 214);
   --completeTask: rgb(233, 220, 235);
   --midDarkColour: rgb(90, 197, 160);
@@ -25,9 +26,12 @@
   --bodyHeight: 90vh;
   --bodyHeightMargin: calc(0.5 * (100vh - var(--bodyHeight)));
 
-  --weatherDaySquareBoxWidth: 120px;
+  --weatherDaySquareBoxWidth: 110px;
 
   --header-scaler: 4rem;
+
+  --location-input-height: 30px; /* applied to drop-down-container */
+  --drop-down-height: calc(1.1 * var(--relative-font-size));
 }
 
 html {
@@ -52,7 +56,7 @@ p {
   margin: var(--bodyHeightMargin) var(--bodyWidthMargin);
   display: grid;
   grid-template-columns: 350px 1fr;
-  column-gap: 20px;
+  /* column-gap: 20px; */
 }
 
 #sidebar-container {
@@ -63,7 +67,7 @@ p {
   grid-template-columns: auto;
   grid-template-rows: repeat(2, auto);
   align-content: start;
-  row-gap: 80px;
+  row-gap: 30px;
 }
 
 #page-title-container {
@@ -78,30 +82,31 @@ p {
 }
 
 #page-title-text {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 800;
 }
 
-/* used to avoid input styling adjusting when autocomplete list is visible */
+/* used to avoid input styling adjusting when drop down list is visible */
 #location-top-container {
   position: relative; /* autocomplete list relative to this */
 }
 
 #location-input-container {
+  padding: 0 10px;
   background-color: var(--lightestColour);
   border: 2px solid black;
   display: grid;
   grid-template-columns: 1fr auto;
   column-gap: 20px;
   align-items: center;
-  font-size: 2rem;
+  font-size: var(--location-input-height);
+  /* font-size: 2rem; */
 }
 
 #location-input-text {
   background-color: var(--lightestColour);
   border: none;
-  padding: 0 10px;
-  /* font-size: 20px; */
+  /* font-size: 1rem; */
 }
 
 input:focus {
@@ -110,59 +115,217 @@ input:focus {
 
 #location-input-icon {
   background-color: var(--lightestColour);
-  width: 40px;
+  width: 30px;
 }
 
-#location-autocomplete {
+#location-drop-down-container {
+  position: relative;
+  cursor: default;
 }
 
-.autocomplete-invis {
+.drop-down-invis {
   visibility: hidden;
 }
 
-.autocomplete-vis {
-  position: absolute;
-  top: 50px;
+.drop-down-vis {
   visibility: visible;
 }
 
+.location-drop-down-item {
+  background-color: rgb(16, 140, 97);
+  color: white;
+  position: absolute;
+  width: 300px;
+  height: var(--location-input-height);
+  display: grid;
+  align-items: center;
+  font-size: 14px;
+}
+
+.location-drop-down-item:hover {
+  background-color: rgb(2, 44, 29);
+}
+
 #display-container {
-  padding: 50px 30px;
+  padding: 50px;
   display: grid;
   justify-content: center;
   align-content: start;
-  grid-template-rows: repeat (2, auto);
-  row-gap: 80px;
+  /* grid-template-rows: repeat (2, auto); */
+  /* row-gap: 80px; */
+}
+
+#info-container {
+  box-shadow: 0px 0px 30px var(--midDarkColour);
+}
+
+.vis-true {
+  /* applied to info-container */
+  opacity: 1;
+  transition-property: opacity;
+  transition-timing-function: ease-in;
+  transition-delay: 0.1s;
+  /* transition-duration created in script */
+}
+.vis-false {
+  /* applied to info-container */
+  opacity: 0;
+  transition-property: opacity;
+  transition-timing-function: ease-out;
+  transition-delay: 0.1s;
+  /* transition-duration created in script */
 }
 
 #location-display {
+  padding: 20px;
   display: grid;
   place-items: center;
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
-#daily-weather-display {
-  padding: 30px;
+#location-name {
+  font-weight: 800;
+}
+
+#location-region {
+  font-size: 2.2rem;
+}
+
+#location-localtime {
+  padding-top: 20px;
+  font-size: 1.5rem;
+}
+
+#weather-display {
+  padding: 10px 30px 30px 30px;
   display: grid;
   justify-content: stretch;
   grid-template-rows: repeat(2, auto);
-  border: 2px solid black;
+  row-gap: 20px;
+  column-gap: 20px;
+  /* border: 2px solid black; */
+  /* box-shadow: 0px 6px 20px var(--midDarkColour); */
 }
 
 #today-weather-display {
-  padding: 20px;
+  padding: 10px;
   grid-row: 1;
-  grid-column: 1 / 4;
-  border: 2px solid green;
   display: grid;
   place-items: center;
+  column-gap: 10px;
+  row-gap: 10px;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: auto 1fr;
+  box-shadow: 0px 0px 30px var(--lighterColour);
+}
+
+#today-header {
+  grid-row: 1;
+  grid-column: 1 / 3;
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  place-items: center;
+}
+
+#today-title {
+  font-size: 2.3rem;
+  font-weight: 800;
+  grid-row: 1;
+}
+
+#today-updated {
+  font-size: 1.5rem;
+  grid-row: 2;
+}
+
+#today-graphic {
+  grid-row: 2;
+  grid-column: 1;
+  display: grid;
+  place-items: center;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, auto);
+}
+
+#today-image {
+  grid-row: 1 / 3;
+  grid-column: 1;
+  width: 80px;
+}
+
+#today-temp {
+  grid-row: 1;
+  grid-column: 2;
+  font-size: 1.5rem;
+}
+
+#today-wind {
+  grid-row: 2;
+  grid-column: 2;
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#today-wind-image {
+  width: 30px;
+}
+
+#today-wind-number {
+  font-size: 1rem;
+}
+
+#today-description {
+  grid-row: 2 / 3;
+  grid-column: 2;
+  /* display: grid; */
+  /* justify-self: start; */
+}
+
+#forecast-weather-display {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 20px;
 }
 
 .forecast-day-display {
   grid-row: 2;
+  padding: 5px;
   width: var(--weatherDaySquareBoxWidth);
   height: var(--weatherDaySquareBoxWidth);
-  border: 2px solid green;
+  box-shadow: 0px 0px 30px var(--lighterColour);
   display: grid;
+  row-gap: 6px;
+  column-gap: 3px;
+  grid-template-rows: auto repeat(2, 1fr);
+  grid-template-columns: repeat(2, auto);
   place-items: center;
+}
+
+.forecast-date {
+  padding: 5px 0;
+  grid-row: 1;
+  grid-column: 1 / 3;
+}
+
+.forecast-image {
+  grid-row: 2 / 4;
+  grid-column: 1;
+}
+
+.forecast-max-temp {
+  font-size: 1.8rem;
+  grid-row: 2;
+  grid-column: 2;
+  align-self: end;
+  padding-right: 5px;
+}
+
+.forecast-min-temp {
+  font-size: 1.8rem;
+  grid-row: 3;
+  grid-column: 2;
+  align-self: start;
+  padding-right: 5px;
 }

@@ -1,3 +1,5 @@
+import { format, fromUnixTime } from 'date-fns';
+
 // would normally be protected, free API so okay for now
 const weatherApiKey = '523c922a8fd8443586f100911241603';
 
@@ -23,9 +25,11 @@ async function generateWeatherForecast(location, numDays) {
 }
 
 const createWeatherData = (currData) => {
+  const friendlyLastUpdated = format(currData.last_updated, 'h:mmaaa');
   return {
     temp_cent: currData.temp_c,
     temp_fahr: currData.temp_f,
+    last_updated: friendlyLastUpdated,
     description: currData.condition.text,
     imageLoc: currData.condition.icon,
     rain_mm: currData.precip_mm,
@@ -37,12 +41,16 @@ const createWeatherData = (currData) => {
 };
 
 const createLocationData = (locData) => {
+  const friendlyDate = format(locData.localtime, 'MMM do');
+  const friendlyTime = format(locData.localtime, 'h:mmaaa');
+
   return {
     name: locData.name,
     region: locData.region,
     country: locData.country,
     localtime_unix: locData.localtime_epoch,
-    localtime_friendly: locData.localtime,
+    localdate_friendly: friendlyDate,
+    localtime_friendly: friendlyTime,
     // poss add date_fns here for a friendly localtime
   };
 };
@@ -50,9 +58,13 @@ const createLocationData = (locData) => {
 const createForecastWeatherArray = (forecastArray) => {
   const simpleArray = [];
   forecastArray.forEach((ele, index) => {
+    // const newDate = fromUnixTime(ele.date_epoch);
+    const newDate = format(fromUnixTime(ele.date_epoch), 'MMM do');
+
     simpleArray.push({
       forecastDayIndex: index + 1,
       forecastDate_unix: ele.date_epoch,
+      forecastDate_tempDate: newDate,
       // forecastDate: ele.date,
       avgTemp_c: ele.day.avgtemp_c,
       maxTemp_c: ele.day.maxtemp_c,

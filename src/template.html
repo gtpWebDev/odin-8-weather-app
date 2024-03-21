@@ -10,7 +10,7 @@
       <div id="sidebar-container">
         <div id="page-title-container">
           <img id="page-title-icon" />
-          <p id="page-title-text">Odin Weather App</p>
+          <p id="page-title-text">Weather App</p>
         </div>
         <div id="location-top-container">
           <div id="location-input-container">
@@ -21,25 +21,44 @@
             />
             <img id="location-input-icon" />
           </div>
-          <select id="location-autocomplete" class="autocomplete-invis">
-            <!-- will be visible / invisible based on script -->
-            <!-- Test -->
-          </select>
+          <div
+            id="location-drop-down-container"
+            class="drop-down-invis-invis"
+          ></div>
         </div>
       </div>
 
       <div id="display-container">
-        <div id="location-display">
-          <p id="location-name"></p>
-          <p id="location-region"></p>
-          <p id="location-localtime"></p>
-        </div>
+        <div id="info-container" class="vis-false">
+          <!-- will be toggled visible / invisible -->
+          <div id="location-display">
+            <p id="location-name"></p>
+            <p id="location-region"></p>
+            <p id="location-localtime"></p>
+          </div>
 
-        <div id="daily-weather-display">
-          <div id="today-weather-display"></div>
-          <div data-day-id="0" class="forecast-day-display"></div>
-          <div data-day-id="1" class="forecast-day-display"></div>
-          <div data-day-id="2" class="forecast-day-display"></div>
+          <div id="weather-display">
+            <div id="today-weather-display">
+              <div id="today-header">
+                <p id="today-title">Current Weather</p>
+                <p id="today-updated"></p>
+              </div>
+              <div id="today-graphic">
+                <img id="today-image" />
+                <div id="today-temp"></div>
+                <div id="today-wind">
+                  <img id="today-wind-image" src="" alt="" />
+                  <p id="today-wind-number"></p>
+                </div>
+              </div>
+              <div id="today-description"></div>
+            </div>
+            <div id="forecast-weather-display">
+              <!-- <div class="forecast-day-display"></div>
+            <div class="forecast-day-display"></div>
+            <div class="forecast-day-display"></div> -->
+            </div>
+          </div>
         </div>
       </div>
     </div>
